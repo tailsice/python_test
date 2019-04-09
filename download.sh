@@ -1,20 +1,18 @@
 #!/bin/bash
 
 Video_DIR="/home/icl/Video"
-Convert_DIR="/home/icl/Video2"
 Video_File="DATA"
 
-LIST=`cat 1-1000_URL`
+LIST=$(cat NAME2)
 for i in $LIST
 do
-  echo $i
-  rm -rf $Video_File
-  ./getVideoURL.py $i > $Video_File
+#  echo $i
+  Video_NAME=$(echo $i | cut -d "@" -f 1)
+  URL=$(echo $i | cut -d "@" -f 3)
+  echo "Video Name = $Video_NAME"
+  echo "Video URL = $URL"
+  ./getVideoURL.py $URL > $Video_File
   Video_URL=$(cat $Video_File | grep streamlink.exe | cut -d "\"" -f 4 )
-  Video_NAME=$(cat $Video_File | grep "番號:" | cut -d ":" -f 2 | sed 's/^[ \t]*//g')
+#  Video_NAME=$(cat $Video_File | grep "番號:" | cut -d ":" -f 2 | sed 's/^[ \t]*//g')
   /usr/bin/streamlink --hls-segment-threads 10 "$Video_URL" best -o $Video_DIR/${Video_NAME}.mp4
-
-#  /home/icl/ffmpeg/ffmpeg -i $Video_DIR/${Video_NAME}.mp4 -f mp4 -vcodec libx264 -preset fast -profile:v main -acodec aac $Convert_DIR/${Video_NAME}.mp4 -hide_banner
-#  rm -rf $S_DIR/$i 
-
 done

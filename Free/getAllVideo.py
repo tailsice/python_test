@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 
 
 # Access from local file
-url = "LIST"
+url = "RAW"
 page = open(url)
 
 
